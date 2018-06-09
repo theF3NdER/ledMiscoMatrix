@@ -9,4 +9,4 @@
 * [Power supply](https://www.aliexpress.com/item/New-5V-2A-3A-4A-5A-6A-8A-10A-12A-20A-30A-40A-60A-SwitchLED-Power/32641542774.html?spm=2114.10010108.1000013.2.63cd2ee2U2Tq6B&scm=1007.13339.90158.0&scm_id=1007.13339.90158.0&scm-url=1007.13339.90158.0&pvid=1107b6e8-724c-465a-8ca8-e6adf5f1e1fc&_t=pvid:1107b6e8-724c-465a-8ca8-e6adf5f1e1fc,scm-url:1007.13339.90158.0) ✗
 
 ## Pacman Animation
-* Is a python2.7 program to make a pacman animated gif. The idea is to transform it into a long Hex constant (something like what shown in [this video] (https://youtu.be/Q1iVtLQOZOI)) load it into the controlloer and than displayed in a 16x60 matrix array.
+Is a python2.7 program to make a pacman animated gif. The idea is to transform it into a long Hex constant (something like what shown in [this video](https://youtu.be/Q1iVtLQOZOI)) load it into the controlloer and than displayed in a 16x60 matrix array.
