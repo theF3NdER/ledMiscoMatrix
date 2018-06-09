@@ -1,22 +1,25 @@
 {
+    "env": {
+        "arduino.path": "/Applications/Arduino.app/Contents/Java/"
+    },
     "configurations": [
         {
             "name": "Mac",
             "includePath": [
-                "${workspaceRoot}/FW/lib/FastLED-3.1.8",
-                "/Applications/Arduino.app/Contents/Java/hardware/arduino/avr/cores/arduino",
-                "/Applications/Arduino.app/Contents/Java/hardware/tools/avr/avr/include",
-                "/Applications/Arduino.app/Contents/Java/hardware/tools/avr/lib/gcc/avr/4.9.2/include",
-                "/Applications/Arduino.app/Contents/Java/hardware/arduino/avr/variants/mega"
+                "/Users/riccardo.ancona/Documents/Arduino/libraries/FastLED",
+                "${env:arduino.path}/hardware/arduino/avr/cores/arduino",
+                "${env:arduino.path}/hardware/tools/avr/avr/include",
+                "${env:arduino.path}/hardware/tools/avr/lib/gcc/avr/4.9.2/include",
+                "${env:arduino.path}/hardware/arduino/avr/variants/mega"
             ],
             "browse": {
                 "limitSymbolsToIncludedHeaders": false,
                 "path": [
-                    "${workspaceRoot}/FW/lib/FastLED-3.1.8",
-                    "/Applications/Arduino.app/Contents/Java/hardware/arduino/avr/cores/arduino",
-                    "/Applications/Arduino.app/Contents/Java/hardware/tools/avr/avr/include",
-                    "/Applications/Arduino.app/Contents/Java/hardware/tools/avr/lib/gcc/avr/4.9.2/include",
-                    "/Applications/Arduino.app/Contents/Java/hardware/arduino/avr/variants/mega"
+                    "/Users/riccardo.ancona/Documents/Arduino/libraries/FastLED",
+                    "${env:arduino.path}/hardware/arduino/avr/cores/arduino",
+                    "${env:arduino.path}/hardware/tools/avr/avr/include",
+                    "${env:arduino.path}/hardware/tools/avr/lib/gcc/avr/4.9.2/include",
+                    "${env:arduino.path}/hardware/arduino/avr/variants/mega"
                 ]
             },
             "macFrameworkPath": [

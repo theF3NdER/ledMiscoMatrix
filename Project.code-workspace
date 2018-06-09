@@ -5,7 +5,7 @@
 		}
 	],
 	"settings": {
-		"arduino.logLevel" : "verbose"
+		"arduino.logLevel" : "info"
 	}
 	
 }
