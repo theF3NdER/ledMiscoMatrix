@@ -22,25 +22,28 @@ def rightBlock(centralBlock, size):
     centralAndRight = np.hstack((centralBlock, (np.zeros((16, size, 3), np.uint8))))
     return centralAndRight
 
-def makeFullImage(ghost, pacman, canvas):
-    for i in range(120):
+def makeFullImage(ghost, pacman, canvas, w):
+    for i in range(w*2):
         centralBlock = assembleCentralBlock(ghost[i%2], ghost[i%2], pacman[i%4])
         asd = leftBlock(centralBlock, i)
-        fullImage = rightBlock(asd, 240-i)
-        extractCentralFrames(fullImage, 'frames/'+'%03d'%i+'.png')
+        fullImage = rightBlock(asd, w*4-i)
+        extractCentralFrames(fullImage, 'frames/4/'+'%03d'%i+'.png', w)
     
 
-def extractCentralFrames(fullImage, name):
-    croppedImage = fullImage[:, 60:120]
+def extractCentralFrames(fullImage, name, w):
+    croppedImage = fullImage[:4, w:w*2]
+    # croppedImage = fullImage[:, 60:120]
     cv2.imwrite(name, croppedImage)
 
 
 def main():
-    canvas = np.zeros((16, 60*3, 3), np.uint8)
+    w = 45
+    h = 16
+    canvas = np.zeros((h, w*3, 3), np.uint8)
 
     ghost, pacman = loadSprites()
 
-    makeFullImage(ghost, pacman, canvas)
+    makeFullImage(ghost, pacman, canvas, w)
 
 if __name__ == "__main__":
     main()
