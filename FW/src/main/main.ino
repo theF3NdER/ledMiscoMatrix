@@ -1,32 +1,21 @@
-#include <Arduino.h>
 #include <FastLED.h>
+#define NUM_LEDS 45
+#define DATA_PIN 1
 
-#define NUM_LEDS_PER_STRIPE 240
-#define NUM_STRIPS 3
+CRGB leds[NUM_LEDS];
 
-CRGB leds[NUM_LEDS_PER_STRIPE];
-CLEDController *controllers[NUM_STRIPS];
-uint8_t gBrightness = 128;
+void setup() { 
+       FastLED.addLeds<NEOPIXEL, DATA_PIN>(leds, NUM_LEDS);
+   }
 
-void setup() 
-{ 
-  controllers[0] = &FastLED.addLeds<WS2812,1>(leds, NUM_LEDS);
-  controllers[1] = &FastLED.addLeds<WS2812,2>(leds, NUM_LEDS);
-  controllers[2] = &FastLED.addLeds<WS2812,10>(leds, NUM_LEDS);
-}
-
-void loop() 
-{ 
-  // draw led data for the first strand into leds
-  fill_solid(leds, NUM_LEDS, CRGB::Red);
-  controllers[0]->showLeds(gBrightness);
-
-  // draw led data for the second strand into leds
-  fill_solid(leds, NUM_LEDS, CRGB::Green);
-  controllers[1]->showLeds(gBrightness);
-
-  // draw led data for the third strand into leds
-  fill_solid(leds, NUM_LEDS, CRGB::Blue);
-  controllers[2]->showLeds(gBrightness);
-
+void loop() {
+      // Turn the first led red for 1 second
+      leds[44] = CRGB(10,10,10); 
+      FastLED.show();
+      delay(1000);
+      
+      // Set the first led back to black for 1 second
+      leds[44] = CRGB::Black;
+      FastLED.show();
+      delay(1000);
 }
