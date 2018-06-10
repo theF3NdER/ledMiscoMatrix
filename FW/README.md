@@ -62,6 +62,8 @@ Here we carry out the installation:
 ```bash
 sudo python setup.py build
 sudo python setup.py install
+sudo python3 setup.py build
+sudo python3 setup.py install
 ```
 
 Done!
