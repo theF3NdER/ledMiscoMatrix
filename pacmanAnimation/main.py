@@ -27,13 +27,16 @@ def makeFullImage(ghost, pacman, canvas, w):
         centralBlock = assembleCentralBlock(ghost[i%2], ghost[i%2], pacman[i%4])
         asd = leftBlock(centralBlock, i)
         fullImage = rightBlock(asd, w*4-i)
-        extractCentralFrames(fullImage, 'frames/4/'+'%03d'%i+'.png', w)
+        # extractCentralFrames(fullImage, '%03d'%i+'.txt', w)
+        extractCentralFrames(fullImage, 'frames/4/'+'%03d'%i+'.txt', w)
     
 
 def extractCentralFrames(fullImage, name, w):
     croppedImage = fullImage[:4, w:w*2]
     # croppedImage = fullImage[:, 60:120]
-    cv2.imwrite(name, croppedImage)
+    # cv2.imwrite(name, croppedImage)
+    # np.savetxt(name, fullImage)
+    fullImage.tofile(name, sep=" ",format="%s")
 
 
 def main():
