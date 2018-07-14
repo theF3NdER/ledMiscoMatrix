@@ -3,7 +3,7 @@
 # Authors: Davide Giuffrida (dvdgff@gmail.com)
 #          Riccardo Ancona  (riccardo.ancona@gmail.com)
  
-LED_DRIVE_PINS[""]
+#LED_DRIVE_PINS[""]
  
 import time
 from neopixel import *
@@ -18,7 +18,7 @@ LED_COUNT      = LED_COUNT_PER_STRIPE * STRIPES_NO      # Number of LED pixels.
 LED_PIN        = 21      # GPIO pin connected to the pixels (18 uses PWM!).
 LED_FREQ_HZ    = 800000  # LED signal frequency in hertz (usually 800khz)
 LED_DMA        = 10      # DMA channel to use for generating signal (try 10)
-LED_BRIGHTNESS = 150     # Set to 0 for darkest and 255 for brightest
+LED_BRIGHTNESS = 50     # Set to 0 for darkest and 255 for brightest
 LED_INVERT     = False   # True to invert the signal (when using NPN transistor level shift)
 LED_CHANNEL    = 0       # set to '1' for GPIOs 13, 19, 41, 45 or 53
  
@@ -64,7 +64,7 @@ if __name__ == '__main__':
         print('Use "-c" argument to clear LEDs on exit')
  
     try:
-        FPS = 30
+        FPS = 15
         wait_ms = 1000.0/FPS
         colorvalue = 0
         color = Color(colorvalue,colorvalue,colorvalue)
@@ -72,7 +72,7 @@ if __name__ == '__main__':
         index = 0
 
         while True:
-            my_data = openFrame("./4/"+'%03d'%index+'.txt')
+            my_data = openFrame("../../pacmanAnimation/frames/4/"+'%03d'%index+'.txt')
             #np.genfromtxt( "./4/"+'%03d'%index+'.txt', delimiter=' ')
             index += 1
             index = index % 89
