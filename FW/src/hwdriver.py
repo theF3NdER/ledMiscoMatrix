@@ -48,8 +48,7 @@ class HWDriver:
 
         i = multiplier * x + offset
 
-        for strip in self.strips:
-            strip.setPixelColor(i, color)
+        self.strips[y // LED_COUNT_PER_STRIPE].setPixelColor(i, color)
 
     def show(self):
         for strip in self.strips:
