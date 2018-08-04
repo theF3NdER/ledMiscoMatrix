@@ -37,8 +37,8 @@ def colorWipe(color, wait_ms=50):
             time.sleep(wait_ms/1000.0)
 
 def init_hw_monitor():
-    from hwdriver import HWDriver
-    monitor[0] = HWDriver()
+    from hardwaremonitor import HardwareMonitor
+    monitor[0] = HardwareMonitor()
 
 def run():
     # Process arguments

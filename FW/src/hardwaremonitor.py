@@ -28,7 +28,7 @@ def stripFactory(cfg):
     return Adafruit_NeoPixel(LED_COUNT, cfg.pin, LED_FREQ_HZ, LED_DMA, LED_INVERT, LED_BRIGHTNESS, cfg.channel)
 
 
-class HWDriver:
+class HardwareMonitor:
 
     strips = []
 
