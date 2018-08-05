@@ -21,7 +21,7 @@ LED_CHANNEL    = 0       # set to '1' for GPIOs 13, 19, 41, 45 or 53
 
 
 LedStripCfg = namedtuple('LedStripCfg', 'pin channel')
-LedStripsCfgs = [LedStripCfg(13, 1), LedStripCfg(18, 0), LedStripCfg(19, 1), LedStripCfg(21, 1)]
+LedStripsCfgs = [LedStripCfg(13, 1), LedStripCfg(18, 0), LedStripCfg(19, 1), LedStripCfg(21, 0)]
 
 # Mock here
 def stripFactory(cfg):
@@ -39,7 +39,8 @@ class HardwareMonitor:
             print("Starting strip with GPIO %s and channel %s" % (cfg.pin, cfg.channel))
             strip.begin()
 
-    def setPixel(self, strips, x, y, color):
+    def setPixelColor(self, x, y, color):
+        col = Color(color.r, color.g, color.b)
         odd_row = y % 2
         offset = y * LED_COUNT_PER_STRIPE
         multiplier = 1
@@ -49,7 +50,7 @@ class HardwareMonitor:
 
         i = multiplier * x + offset
 
-        self.strips[y // LED_COUNT_PER_STRIPE].setPixelColor(i, color)
+        self.strips[y // LED_COUNT_PER_STRIPE].setPixelColor(i, col)
 
     def show(self):
         for strip in self.strips:

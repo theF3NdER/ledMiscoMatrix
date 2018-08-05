@@ -38,7 +38,7 @@ def colorWipe(color, wait_ms=50):
 
 def init_hw_monitor():
     from hardwaremonitor import HardwareMonitor
-    monitor[0] = HardwareMonitor()
+    monitor.append(HardwareMonitor())
 
 def run():
     # Process arguments
@@ -70,11 +70,11 @@ def run():
 
             for x in range(0,MONITOR_WIDTH-1):
                 for y in range(0,MONITOR_HEIGHT-1):
-                    pos = x + y * MONITOR_WIDTH
+                    pos = (x + y * MONITOR_WIDTH)%180
                     color = Color(int(my_data[pos][2]),int(my_data[pos][1]),int(my_data[pos][0]))
                     monitor[0].setPixelColor(x, y, color)
 
-            monitor.show()
+            monitor[0].show()
             time.sleep(wait_ms/1000.0)
 
     except KeyboardInterrupt:
