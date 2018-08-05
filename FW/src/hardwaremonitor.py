@@ -36,6 +36,7 @@ class HardwareMonitor:
         for cfg in LedStripsCfgs:
             strip = stripFactory(cfg)
             self.strips.append(strip)
+            print("Starting strip with GPIO %s and channel %s" % cfg.pin, cfg.channel)
             strip.begin()
 
     def setPixel(self, strips, x, y, color):
