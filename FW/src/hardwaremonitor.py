@@ -21,7 +21,7 @@ LED_CHANNEL    = 0       # set to '1' for GPIOs 13, 19, 41, 45 or 53
 
 
 LedStripCfg = namedtuple('LedStripCfg', 'pin channel')
-LedStripsCfgs = [LedStripCfg(13, 51), LedStripCfg(18, 0), LedStripCfg(19, 1), LedStripCfg(21, 1)]
+LedStripsCfgs = [LedStripCfg(13, 1), LedStripCfg(18, 0), LedStripCfg(19, 1), LedStripCfg(21, 1)]
 
 # Mock here
 def stripFactory(cfg):
