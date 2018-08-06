@@ -17,6 +17,7 @@ monitor = [] # will be instanciated afterwards
 Color = namedtuple('Color', 'r g b')
 
 import csv
+
 def openFrame(file):
     with open(file, 'r') as f:
         aList = []
@@ -25,6 +26,24 @@ def openFrame(file):
             aList.append(row)
         return(aList)
 
+def openAnimation(directory):
+    anAnimation = []
+    maxFrames = 89
+
+    foreground = Color(255,255,0)
+    background = Color(30,30,30)
+
+    for index in range (0,maxFrames):
+        with open(directory+'%03d'%index+'.txt', 'r') as f:
+            aList = []
+            reader = csv.reader(f, delimiter=',', quoting=csv.QUOTE_NONE)
+            for row in reader:
+                aList.append(row)
+            anAnimation.append(aList)
+        percentage =(float(index+1)/maxFrames) * 100.0
+        print("Loading "+ str(percentage) + "%") 
+        showProgressBar(foreground, background, percentage/100.0,0)
+    return(anAnimation)
 
 def colorWipe(color, wait_ms=50):
     """Wipe color across display a pixel at a time."""
@@ -35,6 +54,22 @@ def colorWipe(color, wait_ms=50):
             monitor[0].setPixelColor(x, y, color)
             monitor[0].show()
             time.sleep(wait_ms/1000.0)
+
+def showProgressBar(colorForeground, colorBackground, progress, wait_ms=50):
+    """Show a progress bar for the entire monitor"""
+
+    for x in range(0,MONITOR_WIDTH-1):
+        for y in range(0,MONITOR_HEIGHT-1):
+            pos = x + y * MONITOR_WIDTH
+
+            color = colorForeground
+            if (x/MONITOR_WIDTH > progress):
+                color = colorBackground
+
+            monitor[0].setPixelColor(x, y, color)
+
+    monitor[0].show()
+    time.sleep(wait_ms/1000.0)
 
 def init_hw_monitor():
     from hardwaremonitor import HardwareMonitor
@@ -60,22 +95,19 @@ def run():
         colorvalue = 0
         color = Color(colorvalue,colorvalue,colorvalue)
 
-        index = 0
+        my_animation = openAnimation("../../pacmanAnimation/frames/4/")
 
         while True:
-            my_data = openFrame("../../pacmanAnimation/frames/4/"+'%03d'%index+'.txt')
-            #np.genfromtxt( "./4/"+'%03d'%index+'.txt', delimiter=' ')
-            index += 1
-            index = index % 89
 
-            for x in range(0,MONITOR_WIDTH-1):
-                for y in range(0,MONITOR_HEIGHT-1):
-                    pos = (x + y * MONITOR_WIDTH)%180
-                    color = Color(int(my_data[pos][2]),int(my_data[pos][1]),int(my_data[pos][0]))
-                    monitor[0].setPixelColor(x, y, color)
+            for frame in my_animation:
+                for x in range(0,MONITOR_WIDTH-1):
+                    for y in range(0,MONITOR_HEIGHT-1):
+                        pos = (x + y * MONITOR_WIDTH)%180
+                        color = Color(int(frame[pos][2]),int(frame[pos][1]),int(frame[pos][0]))
+                        monitor[0].setPixelColor(x, y, color)
 
-            monitor[0].show()
-            time.sleep(wait_ms/1000.0)
+                monitor[0].show()
+                time.sleep(wait_ms/1000.0)
 
     except KeyboardInterrupt:
         #if args.clear:
