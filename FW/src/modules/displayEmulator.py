@@ -28,3 +28,11 @@ def scale(oldFrame, factor):
 frame = createBlankFrame(16, 45)
 fillFrame(frame)
 scaled = scale(frame, 30)
+
+while(True):
+    cv2.imshow("culo", scaled)
+
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
+
+cv2.destroyAllWindows()
