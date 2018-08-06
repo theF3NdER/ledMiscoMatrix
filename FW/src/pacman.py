@@ -28,13 +28,21 @@ def openFrame(file):
 
 def openAnimation(directory):
     anAnimation = []
-    for index in range (0,89):
+    maxFrames = 89
+
+    foreground = Color(255,255,0)
+    background = Color(30,30,30)
+
+    for index in range (0,maxFrames):
         with open(directory+'%03d'%index+'.txt', 'r') as f:
             aList = []
             reader = csv.reader(f, delimiter=',', quoting=csv.QUOTE_NONE)
             for row in reader:
                 aList.append(row)
             anAnimation.append(aList)
+        percentage =(float(index+1)/maxFrames) * 100.0
+        print("Loading "+ str(percentage) + "%") 
+        showProgressBar(foreground, background, percentage/100.0,0)
     return(anAnimation)
 
 def colorWipe(color, wait_ms=50):
