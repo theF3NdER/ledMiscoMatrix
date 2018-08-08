@@ -1,38 +1,34 @@
-import cv2
-import numpy as np
+import pygame
+import time
+import sys
+from random import randint
 
+#Config
+pygame.init()
+scale = 30
+size = (45*scale, 16*scale)
+screen = pygame.display.set_mode(size)
+BLACK = (0, 0, 0)
 
-def createBlankFrame(h, w):
-    frame = np.zeros([h, w, 3], np.uint8)
-    return frame
+class Pixel():
+    def __init__(self, x, y, color):
+        self.width = scale
+        self.height = scale
+        self.x = x
+        self.y = y
+        self.color = color
 
-def fillFrame(frame):
-    for h in range(frame.shape[0]):
-        for w in range(frame.shape[1]):
-            if w%2 == 0:
-                frame[h][w] = [137, 56, 25]
-            else:
-                frame[h][w] = [54, 190, 173]
+    def draw(self):
+        pygame.draw.rect(screen, self.color,(self.x,self.y,self.width,self.height))
 
-def scale(oldFrame, factor):
-    newFrame = np.zeros([oldFrame.shape[0]*factor, oldFrame.shape[1]*factor, 3], np.uint8)
+while(1):
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT: sys.exit()
 
-    for row in range(oldFrame.shape[0]):
-        for col in range(oldFrame.shape[1]):
-            newFrame[col*factor:col*factor+factor][row*factor:row*factor+factor] = oldFrame[row][col]
-
-    return newFrame
+    screen.fill(BLACK)
+    # for pixel in range(720):
+    pixel = Pixel(0, 0, (randint(0, 255), randint(0, 255), randint(0, 255)))
+    pixel.draw()
     
-
-
-frame = createBlankFrame(16, 45)
-fillFrame(frame)
-scaled = scale(frame, 30)
-
-while(True):
-    cv2.imshow("culo", scaled)
-
-    if cv2.waitKey(1) & 0xFF == ord('q'):
-        break
-
-cv2.destroyAllWindows()
+    pygame.display.flip() 
+    time.sleep(5/30)
