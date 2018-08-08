@@ -4,96 +4,125 @@
 # NeoPixel library strandtest example
 # Authors: Davide Giuffrida (dvdgff@gmail.com)
 #          Riccardo Ancona  (riccardo.ancona@gmail.com)
+<<<<<<< HEAD
  
 LED_DRIVE_PINS[""]
  
+=======
+
+>>>>>>> master
 import time
-from neopixel import *
 import argparse
 import math
 import numpy as np
-import modules.displayEmulator as de
-
-# LED strip configuration:
-LED_COUNT_PER_STRIPE = 45
-STRIPES_NO = 4
-LED_COUNT      = LED_COUNT_PER_STRIPE * STRIPES_NO      # Number of LED pixels.
-LED_PIN        = 21      # GPIO pin connected to the pixels (18 uses PWM!).
-LED_FREQ_HZ    = 800000  # LED signal frequency in hertz (usually 800khz)
-LED_DMA        = 10      # DMA channel to use for generating signal (try 10)
-LED_BRIGHTNESS = 150     # Set to 0 for darkest and 255 for brightest
-LED_INVERT     = False   # True to invert the signal (when using NPN transistor level shift)
-LED_CHANNEL    = 0       # set to '1' for GPIOs 13, 19, 41, 45 or 53
- 
-# Pin Funzionanti:
-
-# 13 con LED_CHANNEL 1
-# 18 con LED_CHANNEL 0
-# 19 con LED_CHANNEL 1
-# 21 con LED_CHANNEL 1
+from collections import namedtuple
 
 
-def colorWipe(strip, color, wait_ms=50):
-        """Wipe color across display a pixel at a time."""
-        for i in range(strip.numPixels()):
-            strip.setPixelColor(i, color)
-            strip.show()
-            time.sleep(wait_ms/1000.0)
+MONITOR_WIDTH = 45
+MONITOR_HEIGHT = 16
+monitor = [] # will be instanciated afterwards
+
+Color = namedtuple('Color', 'r g b')
 
 import csv
+
 def openFrame(file):
     with open(file, 'r') as f:
         aList = []
         reader = csv.reader(f, delimiter=',', quoting=csv.QUOTE_NONE)
         for row in reader:
             aList.append(row)
-        # i need to strip the extra white space from each string in the row
         return(aList)
 
-# Main program logic follows:
-if __name__ == '__main__':
+def openAnimation(directory):
+    anAnimation = []
+    maxFrames = 89
+
+    foreground = Color(255,255,0)
+    background = Color(30,30,30)
+
+    for index in range (0,maxFrames):
+        with open(directory+'%03d'%index+'.txt', 'r') as f:
+            aList = []
+            reader = csv.reader(f, delimiter=',', quoting=csv.QUOTE_NONE)
+            for row in reader:
+                aList.append(row)
+            anAnimation.append(aList)
+        percentage =(float(index+1)/maxFrames) * 100.0
+        print("Loading "+ str(percentage) + "%") 
+        showProgressBar(foreground, background, percentage/100.0,0)
+    return(anAnimation)
+
+def colorWipe(color, wait_ms=50):
+    """Wipe color across display a pixel at a time."""
+
+    for x in range(0,MONITOR_WIDTH-1):
+        for y in range(0,MONITOR_HEIGHT-1):
+            pos = x + y * MONITOR_WIDTH
+            monitor[0].setPixelColor(x, y, color)
+            monitor[0].show()
+            time.sleep(wait_ms/1000.0)
+
+def showProgressBar(colorForeground, colorBackground, progress, wait_ms=50):
+    """Show a progress bar for the entire monitor"""
+
+    for x in range(0,MONITOR_WIDTH-1):
+        for y in range(0,MONITOR_HEIGHT-1):
+            pos = x + y * MONITOR_WIDTH
+
+            color = colorForeground
+            if (x/MONITOR_WIDTH > progress):
+                color = colorBackground
+
+            monitor[0].setPixelColor(x, y, color)
+
+    monitor[0].show()
+    time.sleep(wait_ms/1000.0)
+
+def init_hw_monitor():
+    from hardwaremonitor import HardwareMonitor
+    monitor.append(HardwareMonitor())
+
+def run():
     # Process arguments
     parser = argparse.ArgumentParser()
     parser.add_argument('-c', '--clear', action='store_true', help='clear the display on exit')
+    parser.add_argument('--hw', action='store_true', help='Initialize hw monitor')
     args = parser.parse_args()
- 
-    # Create NeoPixel object with appropriate configuration.
-    strip = Adafruit_NeoPixel(LED_COUNT, LED_PIN, LED_FREQ_HZ, LED_DMA, LED_INVERT, LED_BRIGHTNESS, LED_CHANNEL)
-    # Intialize the library (must be called once before other functions).
-    strip.begin()
- 
+
     print ('Press Ctrl-C to quit.')
     if not args.clear:
         print('Use "-c" argument to clear LEDs on exit')
- 
+
+    if args.hw:
+        init_hw_monitor()
+
     try:
         FPS = 30
         wait_ms = 1000.0/FPS
         colorvalue = 0
         color = Color(colorvalue,colorvalue,colorvalue)
-        
-        index = 0
+
+        my_animation = openAnimation("../../pacmanAnimation/frames/4/")
 
         while True:
-            my_data = openFrame("./4/"+'%03d'%index+'.txt')
-            #np.genfromtxt( "./4/"+'%03d'%index+'.txt', delimiter=' ')
-            index += 1
-            index = index % 89
 
-            for i in range(strip.numPixels()):
-                r = i // LED_COUNT_PER_STRIPE
-                odd_row = r % 2
-                pos = i
-                if (odd_row == 1):
-                    pos = int(LED_COUNT_PER_STRIPE * (r+1)) - 1 - i % LED_COUNT_PER_STRIPE
-                
-                color = Color(int(my_data[pos][2]),int(my_data[pos][1]),int(my_data[pos][0]))
-                strip.setPixelColor(i, color)
-            
-            
-            strip.show()
-            time.sleep(wait_ms/1000.0)
-    
+            for frame in my_animation:
+                for x in range(0,MONITOR_WIDTH-1):
+                    for y in range(0,MONITOR_HEIGHT-1):
+                        pos = (x + y * MONITOR_WIDTH)%180
+                        color = Color(int(frame[pos][2]),int(frame[pos][1]),int(frame[pos][0]))
+                        monitor[0].setPixelColor(x, y, color)
+
+                monitor[0].show()
+                time.sleep(wait_ms/1000.0)
+
     except KeyboardInterrupt:
         #if args.clear:
-        colorWipe(strip, Color(0,0,0), 10)
+        colorWipe(Color(0,0,0), 10)
+
+
+
+# Main program logic follows:
+if __name__ == '__main__':
+    run()
