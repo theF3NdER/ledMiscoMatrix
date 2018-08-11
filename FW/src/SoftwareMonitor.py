@@ -25,27 +25,23 @@ class Pixel():
 class SoftwareMonitor(Monitor):
     def __init__(self):
         super(Monitor, self).__init__()
-        
 
-    def setPixelColor(self):
+        self.matrix = []
+        for pixelOffY in range(16):
+            self.matrix.append([])
+            for pixelOffX in range(45):
+                self.matrix[pixelOffY].append(Pixel(pixelOffX*scale, pixelOffY*scale, (000, 000, 000)))
+
+    def setPixelColor(self, x, y, color):
         super().setPixelColor(x, y, color)
+        self.matrix[y][x].color = (color.r, color.g, color.b)
     
     def show(self):
         display.fill(BLACK)
-        for pixelOffY in range(16):
-            for pixelOffX in range(45):
-                pixel = Pixel(pixelOffX*scale, pixelOffY*scale, (randint(30, 255), randint(30, 255), randint(30, 255)))
-                pixel.draw()
+        
+        for y in range(16):
+            for x in range(45):
+                 self.matrix[y][x].draw()
 
         pygame.display.flip()
-        
-
-while(1):
-    screen = SoftwareMonitor()
-    # for event in pygame.event.get():
-    #     if event.type == pygame.QUIT: sys.exit()
-    
-    screen.show()
-    
-    time.sleep(1/30)
 
