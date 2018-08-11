@@ -38,7 +38,7 @@ class SoftwareMonitor(Monitor):
     
     def show(self):
         display.fill(BLACK)
-        
+
         for y in range(16):
             for x in range(45):
                  self.matrix[y][x].draw()

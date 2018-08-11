@@ -31,7 +31,7 @@ def openFrame(file):
 
 def openAnimation(directory):
     anAnimation = []
-    maxFrames = 89
+    maxFrames = 103
 
     foreground = Color(255,255,0)
     background = Color(30,30,30)
@@ -111,7 +111,7 @@ def run():
             for frame in my_animation:
                 for x in range(0,MONITOR_WIDTH-1):
                     for y in range(0,MONITOR_HEIGHT-1):
-                        pos = (x + y * MONITOR_WIDTH)%180
+                        pos = (x + y * MONITOR_WIDTH)
                         color = Color(int(frame[pos][2]),int(frame[pos][1]),int(frame[pos][0]))
                         monitor[0].setPixelColor(x, y, color)
 

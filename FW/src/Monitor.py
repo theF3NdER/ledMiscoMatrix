@@ -7,7 +7,7 @@ from abc import ABC, abstractmethod
 LED_COUNT_PER_STRIPE = 45
 STRIPES_NO = 4
 STRIPES_BLOCKS = 4
-SCALE = 35
+SCALE = 30
 
 class Monitor:
 
