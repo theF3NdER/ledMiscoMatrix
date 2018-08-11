@@ -4,13 +4,8 @@
 # NeoPixel library strandtest example
 # Authors: Davide Giuffrida (dvdgff@gmail.com)
 #          Riccardo Ancona  (riccardo.ancona@gmail.com)
-<<<<<<< HEAD
- 
-LED_DRIVE_PINS[""]
- 
-=======
 
->>>>>>> master
+
 import time
 import argparse
 import math
@@ -83,6 +78,10 @@ def init_hw_monitor():
     from hardwaremonitor import HardwareMonitor
     monitor.append(HardwareMonitor())
 
+def init_sw_monitor():
+    from SoftwareMonitor import SoftwareMonitor
+    monitor.append(SoftwareMonitor())
+
 def run():
     # Process arguments
     parser = argparse.ArgumentParser()
@@ -96,6 +95,8 @@ def run():
 
     if args.hw:
         init_hw_monitor()
+    else:
+        init_sw_monitor()
 
     try:
         FPS = 30

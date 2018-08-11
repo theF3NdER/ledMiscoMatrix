@@ -26,9 +26,9 @@ while(1):
         if event.type == pygame.QUIT: sys.exit()
 
     screen.fill(BLACK)
-    # for pixel in range(720):
-    pixel = Pixel(0, 0, (randint(0, 255), randint(0, 255), randint(0, 255)))
-    pixel.draw()
+    for pixel in range(720):
+        pixel = Pixel(pixel%self.width*scale, pixel//self.height*scale, (randint(0, 255), randint(0, 255), randint(0, 255)))
+        pixel.draw()
     
     pygame.display.flip() 
     time.sleep(5/30)
