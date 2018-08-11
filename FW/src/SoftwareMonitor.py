@@ -6,8 +6,8 @@ import sys
 # import cv2
 
 pygame.init()
-scale = 35
-size = (45*scale, 16*scale)
+scale = 40
+size = (44*scale, 15*scale)
 display = pygame.display.set_mode(size)
 BLACK = (0, 0, 0)
 

@@ -44,7 +44,7 @@ def openAnimation(directory):
                 aList.append(row)
             anAnimation.append(aList)
         percentage =(float(index+1)/maxFrames) * 100.0
-        print("Loading "+ str(percentage) + "%") 
+        print("Loading "+ str(percentage)[:5] + "%") 
         showProgressBar(foreground, background, percentage/100.0,0)
     return(anAnimation)
 
@@ -99,7 +99,7 @@ def run():
         init_sw_monitor()
 
     try:
-        FPS = 30
+        FPS = 15
         wait_ms = 1000.0/FPS
         colorvalue = 0
         color = Color(colorvalue,colorvalue,colorvalue)
