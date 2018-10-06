@@ -6,7 +6,7 @@
 
 from neopixel import *
 from collections import namedtuple
-
+import time
 
 # LED strip configuration:
 LED_COUNT_PER_STRIPE = 45
@@ -21,12 +21,10 @@ LED_CHANNEL    = 0       # set to '1' for GPIOs 13, 19, 41, 45 or 53
 
 
 LedStripCfg = namedtuple('LedStripCfg', 'pin channel')
-LedStripsCfgs = [LedStripCfg(13, 1), LedStripCfg(18, 0), LedStripCfg(19, 1), LedStripCfg(21, 0)]
+LedStripsCfgs = [ LedStripCfg(18, 0), LedStripCfg(13, 1), LedStripCfg(19, 1), LedStripCfg(21, 0)]
 
-# Mock here
 def stripFactory(cfg):
     return Adafruit_NeoPixel(LED_COUNT, cfg.pin, LED_FREQ_HZ, LED_DMA, LED_INVERT, LED_BRIGHTNESS, cfg.channel)
-
 
 class HardwareMonitor:
 
@@ -42,15 +40,16 @@ class HardwareMonitor:
     def setPixelColor(self, x, y, color):
         col = Color(color.r, color.g, color.b)
         odd_row = y % 2
-        offset = y * LED_COUNT_PER_STRIPE
+        offset = (y % STRIPES_NO) * LED_COUNT_PER_STRIPE
         multiplier = 1
         if odd_row == 1:
             offset += LED_COUNT_PER_STRIPE-1
             multiplier = -1
 
-        i = multiplier * x + offset
+        i = offset + multiplier * x
 
-        self.strips[y // LED_COUNT_PER_STRIPE].setPixelColor(i, col)
+        row = y // STRIPES_NO
+        self.strips[row].setPixelColor(i, col)
 
     def show(self):
         for strip in self.strips:

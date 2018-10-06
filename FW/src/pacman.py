@@ -38,6 +38,7 @@ def openAnimation(directory):
 
     for index in range (0,maxFrames):
         with open(directory+'%03d'%index+'.txt', 'r') as f:
+        # with open(directory+'082.txt', 'r') as f:
             aList = []
             reader = csv.reader(f, delimiter=',', quoting=csv.QUOTE_NONE)
             for row in reader:
@@ -46,6 +47,8 @@ def openAnimation(directory):
         percentage =(float(index+1)/maxFrames) * 100.0
         print("Loading "+ str(percentage)[:5] + "%") 
         showProgressBar(foreground, background, percentage/100.0,0)
+    
+    # colorWipe(Color(0,0,0), 0)
     return(anAnimation)
 
 def colorWipe(color, wait_ms=50):
@@ -58,12 +61,11 @@ def colorWipe(color, wait_ms=50):
             monitor[0].show()
             time.sleep(wait_ms/1000.0)
 
-def showProgressBar(colorForeground, colorBackground, progress, wait_ms=50):
+def showProgressBar(colorForeground, colorBackground, progress, wait_ms=0):
     """Show a progress bar for the entire monitor"""
 
-    for x in range(0,MONITOR_WIDTH-1):
-        for y in range(0,MONITOR_HEIGHT-1):
-            pos = x + y * MONITOR_WIDTH
+    for x in range(MONITOR_WIDTH):
+        for y in range(MONITOR_HEIGHT):
 
             color = colorForeground
             if (x/MONITOR_WIDTH > progress):
@@ -99,18 +101,18 @@ def run():
         init_sw_monitor()
 
     try:
-        FPS = 15
+        FPS = 60
         wait_ms = 1000.0/FPS
         colorvalue = 0
         color = Color(colorvalue,colorvalue,colorvalue)
 
-        my_animation = openAnimation("../../pacmanAnimation/frames/4/")
+        my_animation = openAnimation("srcAnimation/")
 
         while True:
-
             for frame in my_animation:
-                for x in range(0,MONITOR_WIDTH-1):
-                    for y in range(0,MONITOR_HEIGHT-1):
+                for x in range(MONITOR_WIDTH):
+                    for y in range(MONITOR_HEIGHT):
+                        #the index of the pos-th led in the matrix (from 1 up to 720)
                         pos = (x + y * MONITOR_WIDTH)
                         color = Color(int(frame[pos][2]),int(frame[pos][1]),int(frame[pos][0]))
                         monitor[0].setPixelColor(x, y, color)
