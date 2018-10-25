@@ -3,7 +3,6 @@ import time
 from Monitor import Monitor
 from random import randint
 import sys
-# import cv2
 
 pygame.init()
 scale = 40
@@ -24,16 +23,19 @@ class Pixel():
 
 class SoftwareMonitor(Monitor):
     def __init__(self):
-        super(Monitor, self).__init__()
+        Monitor.__init__(self)
 
+        #make a brand new black (empty) matrix
         self.matrix = []
-        for pixelOffY in range(16):
+        for pixelOffY in range(self.config['STRIPES_NO']*self.config['STRIPES_BLOCKS']):
             self.matrix.append([])
-            for pixelOffX in range(45):
+            for pixelOffX in range(self.config['LED_COUNT_PER_STRIPE']):
                 self.matrix[pixelOffY].append(Pixel(pixelOffX*scale, pixelOffY*scale, (000, 000, 000)))
 
+    #For each pixel of the matrix, assign a given color in a given position
     def setPixelColor(self, x, y, color):
-        super().setPixelColor(x, y, color)
+        # Sembra che non faccia nulla, verificare
+        # super().setPixelColor(x, y, color)
         self.matrix[y][x].color = (color.r, color.g, color.b)
     
     def show(self):
