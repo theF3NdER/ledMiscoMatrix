@@ -11,6 +11,7 @@ import argparse
 import math
 import numpy as np
 from collections import namedtuple
+import pickle
 
 
 MONITOR_WIDTH = 45
@@ -31,14 +32,14 @@ def openFrame(file):
 
 def openAnimation(directory):
     anAnimation = []
-    maxFrames = 103
+    maxFrames = 216
 
     foreground = Color(255,255,0)
     background = Color(30,30,30)
 
+    ## TXT
     for index in range (0,maxFrames):
         with open(directory+'%03d'%index+'.txt', 'r') as f:
-        # with open(directory+'082.txt', 'r') as f:
             aList = []
             reader = csv.reader(f, delimiter=',', quoting=csv.QUOTE_NONE)
             for row in reader:
@@ -47,6 +48,15 @@ def openAnimation(directory):
         percentage =(float(index+1)/maxFrames) * 100.0
         print("Loading "+ str(percentage)[:5] + "%") 
         showProgressBar(foreground, background, percentage/100.0,0)
+
+
+    ##PICKLE
+    # for index in range (0, maxFrames):
+    #     with open(directory+'%03d'%index+'.pickle', 'r') as inputFile:
+    #         anAnimation.append(pickle.load(inputFile))
+    #     percentage =(float(index+1)/maxFrames) * 100.0
+    #     print("Loading "+ str(percentage)[:5] + "%") 
+    #     showProgressBar(foreground, background, percentage/100.0,0)
     
     # colorWipe(Color(0,0,0), 0)
     return(anAnimation)
@@ -54,8 +64,8 @@ def openAnimation(directory):
 def colorWipe(color, wait_ms=50):
     """Wipe color across display a pixel at a time."""
 
-    for x in range(0,MONITOR_WIDTH-1):
-        for y in range(0,MONITOR_HEIGHT-1):
+    for x in range(0,MONITOR_WIDTH):
+        for y in range(0,MONITOR_HEIGHT):
             pos = x + y * MONITOR_WIDTH
             monitor[0].setPixelColor(x, y, color)
             monitor[0].show()
@@ -64,11 +74,24 @@ def colorWipe(color, wait_ms=50):
 def showProgressBar(colorForeground, colorBackground, progress, wait_ms=0):
     """Show a progress bar for the entire monitor"""
 
-    for x in range(MONITOR_WIDTH):
-        for y in range(MONITOR_HEIGHT):
+    # for x in range(MONITOR_WIDTH):
+    #     for y in range(MONITOR_HEIGHT):
 
-            color = colorForeground
-            if (x/MONITOR_WIDTH > progress):
+    #         color = Color(0,255-int(255*y/16),int(255*y/16))
+    #         if (x/MONITOR_WIDTH > progress):
+    #             color = colorBackground
+
+    #         monitor[0].setPixelColor(x, y, color)
+
+    # monitor[0].show()
+    # time.sleep(wait_ms/1000.0)
+
+    for x in range(0,MONITOR_WIDTH):
+        for y in range(0,MONITOR_HEIGHT):
+            pos = x + y * MONITOR_WIDTH
+
+            color = Color(0, 255-int(255*y/16), int(255*y/16))
+            if (x > progress*45):
                 color = colorBackground
 
             monitor[0].setPixelColor(x, y, color)
@@ -101,12 +124,13 @@ def run():
         init_sw_monitor()
 
     try:
-        FPS = 60
+        FPS = 30
         wait_ms = 1000.0/FPS
         colorvalue = 0
         color = Color(colorvalue,colorvalue,colorvalue)
 
         my_animation = openAnimation("srcAnimation/")
+        # my_animation = openAnimation("pickle/")
 
         while True:
             for frame in my_animation:
@@ -114,7 +138,7 @@ def run():
                     for y in range(MONITOR_HEIGHT):
                         #the index of the pos-th led in the matrix (from 1 up to 720)
                         pos = (x + y * MONITOR_WIDTH)
-                        color = Color(int(frame[pos][2]),int(frame[pos][1]),int(frame[pos][0]))
+                        color = Color(int(frame[pos][1]), int(frame[pos][2]), int(frame[pos][0]))
                         monitor[0].setPixelColor(x, y, color)
 
                 monitor[0].show()
