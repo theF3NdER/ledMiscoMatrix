@@ -30,15 +30,15 @@ def openFrame(file):
             aList.append(row)
         return(aList)
 
-def openAnimation(directory):
+def openAnimation(directory, maxFrames):
     anAnimation = []
-    maxFrames = 216
+    # maxFrames = 216
 
     foreground = Color(255,255,0)
     background = Color(30,30,30)
 
     ## TXT
-    for index in range (0,maxFrames):
+    for index in range(maxFrames):
         with open(directory+'%03d'%index+'.txt', 'r') as f:
             aList = []
             reader = csv.reader(f, delimiter=',', quoting=csv.QUOTE_NONE)
@@ -112,6 +112,8 @@ def run():
     parser = argparse.ArgumentParser()
     parser.add_argument('-c', '--clear', action='store_true', help='clear the display on exit')
     parser.add_argument('--hw', action='store_true', help='Initialize hw monitor')
+    parser.add_argument('--tvn', action='store_true', help='Write TVN on the display')
+    parser.add_argument('--capitano', action='store_true', help='Write TVN on the display')
     args = parser.parse_args()
 
     print ('Press Ctrl-C to quit.')
@@ -124,25 +126,45 @@ def run():
         init_sw_monitor()
 
     try:
-        FPS = 30
+        FPS = 120
         wait_ms = 1000.0/FPS
         colorvalue = 0
         color = Color(colorvalue,colorvalue,colorvalue)
 
-        my_animation = openAnimation("srcAnimation/")
         # my_animation = openAnimation("pickle/")
 
+        if args.tvn:
+            my_animation = openAnimation("srcAnimation/text/tvn/", 23)
+        elif args.capitano:
+            my_animation = openAnimation("srcAnimation/text/capitano/", 490)
+        else:
+            my_animation = openAnimation("srcAnimation/new/", 216)
+
+        black = Color(0, 0, 0)
+
         while True:
+            # for frame in my_animation:
+            #     for x in range(MONITOR_WIDTH):
+            #         for y in range(MONITOR_HEIGHT):
+            #             #the index of the pos-th led in the matrix (from 1 up to 720)
+            #             pos = (x + y * MONITOR_WIDTH)
+            #             color = Color(int(frame[pos][1]), int(frame[pos][2]), int(frame[pos][0]))
+            #             monitor[0].setPixelColor(x, y, color)
+
+            #     monitor[0].show()
+            #     time.sleep(wait_ms/1000.0)
+            
             for frame in my_animation:
                 for x in range(MONITOR_WIDTH):
                     for y in range(MONITOR_HEIGHT):
-                        #the index of the pos-th led in the matrix (from 1 up to 720)
-                        pos = (x + y * MONITOR_WIDTH)
-                        color = Color(int(frame[pos][1]), int(frame[pos][2]), int(frame[pos][0]))
-                        monitor[0].setPixelColor(x, y, color)
+                        monitor[0].setPixelColor(x, y, black)
 
-                monitor[0].show()
-                time.sleep(wait_ms/1000.0)
+                if len(frame)>0:
+                    for element in frame:
+                        color = Color(int(element[3]), int(element[2]), int(element[4]))
+                        monitor[0].setPixelColor(int(element[1]), int(element[0]), color)
+                    monitor[0].show()
+                    time.sleep(wait_ms/1000.0)
 
     except KeyboardInterrupt:
         #if args.clear:
