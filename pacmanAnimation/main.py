@@ -36,25 +36,39 @@ def makeFullImage():
         andataImg = andata(i)
         ritornoImg = ritorno(i)
         
-        cv2.imwrite('srcAnimation/png/'+'%03d'%i+'.png', andataImg)
-        with open('srcAnimation/'+'%03d'%i+'.txt', "w") as output:
-            for c in xrange(h):
-                for r in xrange(w):
-                    string = ','.join(map(str, andataImg[c][r]))+"\n"
-                    output.write(string)
-
-        cv2.imwrite('srcAnimation/png/'+'%03d'%(108+i)+'.png', ritornoImg)
-        with open('srcAnimation/'+'%03d'%(108+i)+'.txt', "w") as output:
-            for c in xrange(h):
-                for r in xrange(w):
-                    string = ','.join(map(str, ritornoImg[c][r]))+"\n"
-                    output.write(string)
-    
+        # cv2.imwrite('srcAnimation/png/'+'%03d'%i+'.png', andataImg)
         # with open('srcAnimation/'+'%03d'%i+'.txt', "w") as output:
-        # for c in xrange(h):
-        #     for r in xrange(w):
-        #         print(type(andataImg[c][r]), andataImg[c][r])
-        #         input()
+        #     for c in xrange(h):
+        #         for r in xrange(w):
+        #             string = ','.join(map(str, andataImg[c][r]))+"\n"
+        #             output.write(string)
+
+        # cv2.imwrite('srcAnimation/png/'+'%03d'%(108+i)+'.png', ritornoImg)
+        # with open('srcAnimation/'+'%03d'%(108+i)+'.txt', "w") as output:
+        #     for c in xrange(h):
+        #         for r in xrange(w):
+        #             string = ','.join(map(str, ritornoImg[c][r]))+"\n"
+        #             output.write(string)
+    
+        for i in xrange(23):
+            tvnImg = cv2.imread('tvn/frame-'+'%d'%i+'.png')
+            with open('srcAnimation/tvn/'+'%03d'%i+'.txt', "w") as output:
+                for c in xrange(h):
+                    for r in xrange(w):
+                        if (tvnImg[c][r][0] != 0 or tvnImg[c][r][1] != 0 or tvnImg[c][r][2] != 0):
+                            output.write(str(c)+','+str(r)+','+np.array2string(tvnImg[c][r][0])+','+np.array2string(tvnImg[c][r][1])+','+np.array2string(tvnImg[c][r][2])+'\n')
+    
+        # with open('srcAnimation/new/'+'%03d'%i+'.txt', "w") as output:
+        #     for c in xrange(h):
+        #         for r in xrange(w):
+        #             if (andataImg[c][r][0] != 0 or andataImg[c][r][1] != 0 or andataImg[c][r][2] != 0):
+        #                 output.write(str(c)+','+str(r)+','+np.array2string(andataImg[c][r][0])+','+np.array2string(andataImg[c][r][1])+','+np.array2string(andataImg[c][r][2])+'\n')
+        
+        # with open('srcAnimation/new/'+'%03d'%(108+i)+'.txt', "w") as output:
+        #     for c in xrange(h):
+        #         for r in xrange(w):
+        #             if (ritornoImg[c][r][0] != 0 or ritornoImg[c][r][1] != 0 or ritornoImg[c][r][2] != 0):
+        #                 output.write(str(c)+','+str(r)+','+np.array2string(ritornoImg[c][r][0])+','+np.array2string(ritornoImg[c][r][1])+','+np.array2string(ritornoImg[c][r][2])+'\n')
 
 
 
