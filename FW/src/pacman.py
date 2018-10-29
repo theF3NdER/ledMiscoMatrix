@@ -161,7 +161,7 @@ def run():
 
                 if len(frame)>0:
                     for element in frame:
-                        color = Color(int(element[3]), int(element[2]), int(element[4]))
+                        color = Color(int(element[3]), int(element[4]), int(element[2]))
                         monitor[0].setPixelColor(int(element[1]), int(element[0]), color)
                     monitor[0].show()
                     time.sleep(wait_ms/1000.0)
