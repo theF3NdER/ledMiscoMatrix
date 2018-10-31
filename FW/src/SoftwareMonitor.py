@@ -36,7 +36,7 @@ class SoftwareMonitor(Monitor):
     def setPixelColor(self, x, y, color):
         # Sembra che non faccia nulla, verificare
         # super().setPixelColor(x, y, color)
-        self.matrix[y][x].color = (color.r, color.g, color.b)
+        self.matrix[y][x].color = (color.b, color.r, color.g)
     
     def show(self):
         display.fill(BLACK)

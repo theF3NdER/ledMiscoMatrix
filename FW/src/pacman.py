@@ -71,6 +71,52 @@ def colorWipe(color, wait_ms=50):
             monitor[0].show()
             time.sleep(wait_ms/1000.0)
 
+def hsv_to_rgb(h, s, v):
+    if s == 0.0:
+        return v, v, v
+    i = int(h*6.0) # XXX assume int() truncates!
+    f = (h*6.0) - i
+    p = v*(1.0 - s)
+    q = v*(1.0 - s*f)
+    t = v*(1.0 - s*(1.0-f))
+    i = i%6
+    if i == 0:
+        return v, t, p
+    if i == 1:
+        return q, v, p
+    if i == 2:
+        return p, v, t
+    if i == 3:
+        return p, q, v
+    if i == 4:
+        return t, p, v
+    if i == 5:
+        return v, p, q
+
+def rainbow():
+    while True:
+        for ofs in range(MONITOR_WIDTH):
+            for x in range(MONITOR_WIDTH):
+                for y in range(MONITOR_HEIGHT):
+                    odd_row = y % 2
+                    offset = (y % 8) * 45
+                    multiplier = 1
+                    if odd_row == 1:
+                        offset += 45-1
+                        multiplier = -1
+
+                    i = offset + multiplier * x
+
+                    row = y // 8
+
+                    r, g, b = hsv_to_rgb(x/44, 1, 1)
+                    color = Color(int(g*255), int(b*255), int(r*255))
+                    monitor[0].setPixelColor(x, y, color)
+                monitor[0].show()
+            break
+            
+
+
 def showProgressBar(colorForeground, colorBackground, progress, wait_ms=0):
     """Show a progress bar for the entire monitor"""
 
@@ -113,7 +159,9 @@ def run():
     parser.add_argument('-c', '--clear', action='store_true', help='clear the display on exit')
     parser.add_argument('--hw', action='store_true', help='Initialize hw monitor')
     parser.add_argument('--tvn', action='store_true', help='Write TVN on the display')
-    parser.add_argument('--capitano', action='store_true', help='Write TVN on the display')
+    parser.add_argument('--capitano', action='store_true', help='')
+    parser.add_argument('--aulin', action='store_true', help='Write Aulink2k18 on the display')
+    parser.add_argument('--rainbow', action='store_true', help='Play a rainbow animation')
     args = parser.parse_args()
 
     print ('Press Ctrl-C to quit.')
@@ -126,7 +174,7 @@ def run():
         init_sw_monitor()
 
     try:
-        FPS = 120
+        FPS = 12
         wait_ms = 1000.0/FPS
         colorvalue = 0
         color = Color(colorvalue,colorvalue,colorvalue)
@@ -137,6 +185,10 @@ def run():
             my_animation = openAnimation("srcAnimation/text/tvn/", 23)
         elif args.capitano:
             my_animation = openAnimation("srcAnimation/text/capitano/", 490)
+        elif args.aulin:
+            my_animation = openAnimation("srcAnimation/text/aulin/", 93)
+        elif args.rainbow:
+            rainbow()
         else:
             my_animation = openAnimation("srcAnimation/new/", 216)
 
